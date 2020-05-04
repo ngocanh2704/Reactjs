@@ -8,9 +8,13 @@ export default class Control extends Component {
       <div className="row mt-15">
         <br />
         {/* Search */}
-        <Search />
+        <Search onSearch={this.props.onSearch} />
         {/* Sort */}
-        <Sort />
+        <Sort
+          onSort={this.props.onSort}
+          sortBy={this.props.sortBy}
+          sortValue={this.props.sortValue}
+        />
       </div>
     );
   }

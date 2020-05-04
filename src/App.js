@@ -3,6 +3,7 @@ import "./App.css";
 import TaskForm from "./component/TaskForm";
 import Control from "./component/Control";
 import TaskList from "./component/TaskList";
+import { findIndex, filter } from "lodash";
 
 class App extends Component {
   constructor(props) {
@@ -11,10 +12,17 @@ class App extends Component {
       task: [], //id: unique, name,status
       isDisplayForm: false,
       taksEditing: null,
+      filterStatus: {
+        name: "",
+        status: -1,
+      },
+      keyword: "",
+      sortBy: "name",
+      sortValue: 1,
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (localStorage && localStorage.getItem("tasks")) {
       var tasks = JSON.parse(localStorage.getItem("tasks"));
       this.setState({
@@ -63,6 +71,7 @@ class App extends Component {
     var { tasks } = this.state;
     if (data.id === "") {
       data.id = this.generateID();
+      console.log(tasks);
       tasks.push(data);
     } else {
       var index = this.findIndex(data.id);
@@ -77,7 +86,9 @@ class App extends Component {
 
   onUpdateStatus = (id) => {
     var { tasks } = this.state;
-    var index = this.findIndex(id);
+    var index = findIndex(tasks, (task) => {
+      return task.id === id;
+    });
     if (index !== -1) {
       tasks[index].status = !tasks[index].status;
       this.setState({
@@ -89,7 +100,9 @@ class App extends Component {
 
   onDelete = (id) => {
     var { tasks } = this.state;
-    var index = this.findIndex(id);
+    var index = findIndex(tasks, (task) => {
+      return task.id === id;
+    });
     if (index !== -1) {
       tasks.splice(index, 1);
       this.setState({
@@ -102,7 +115,9 @@ class App extends Component {
 
   onUpdate = (id) => {
     var { tasks } = this.state;
-    var index = this.findIndex(id);
+    var index = findIndex(tasks, (task) => {
+      return task.id === id;
+    });
     var taksEditing = tasks[index];
     this.setState({
       taksEditing: taksEditing,
@@ -121,8 +136,74 @@ class App extends Component {
     return result;
   };
 
+  onFilter = (filterName, filterStatus) => {
+    filterStatus = parseInt(filterStatus, 10);
+    this.setState({
+      filterStatus: {
+        name: filterName.toLowerCase(),
+        status: filterStatus,
+      },
+    });
+  };
+
+  onSearch = (keyword) => {
+    this.setState({
+      keyword: keyword,
+    });
+  };
+
+  onSort = (sortBy, sortValue) => {
+    this.setState({
+      sortBy: sortBy,
+      sortValue: sortValue,
+    });
+  };
+
   render() {
-    var { tasks, isDisplayForm, taksEditing } = this.state;
+    var {
+      tasks,
+      isDisplayForm,
+      taksEditing,
+      filterStatus,
+      keyword,
+      sortBy,
+      sortValue,
+    } = this.state;
+
+    if (filterStatus) {
+      if (filterStatus.name) {
+        tasks = filter(tasks, (task) => {
+          return task.name.toLowerCase().indexOf(filterStatus.name) !== -1;
+        });
+      }
+
+      tasks = filter(tasks, (task) => {
+        if (filterStatus.status === -1) {
+          return task;
+        } else {
+          return task.status === (filterStatus.status === 1 ? true : false);
+        }
+      });
+    }
+
+    tasks = filter(tasks, (task) => {
+      return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+    });
+
+    if (sortBy === "name") {
+      tasks.sort((a, b) => {
+        if (a.name > b.name) return sortValue;
+        else if (a.name < b.name) return -sortValue;
+        else return 0;
+      });
+    } else {
+      tasks.sort((a, b) => {
+        if (a.status > b.status) return -sortValue;
+        else if (a.status < b.status) return sortValue;
+        else return 0;
+      });
+    }
+
     var elmTaskForm = isDisplayForm ? (
       <TaskForm
         onCloseForm={this.onCloseForm}
@@ -165,7 +246,12 @@ class App extends Component {
             </button>
             {/* Search - Sort */}
 
-            <Control />
+            <Control
+              onSearch={this.onSearch}
+              onSort={this.onSort}
+              sortBy={sortBy}
+              sortValue={sortValue}
+            />
             {/* List */}
 
             <div className="row mt-15">
@@ -175,6 +261,7 @@ class App extends Component {
                   onUpdateStatus={this.onUpdateStatus}
                   onDelete={this.onDelete}
                   onUpdate={this.onUpdate}
+                  onFilter={this.onFilter}
                 />
               </div>
             </div>
