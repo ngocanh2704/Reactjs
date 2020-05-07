@@ -22,11 +22,11 @@ class App extends Component {
     };
   }
 
-  UNSAFE_componentWillMount() {
+  componentWillMount() {
     if (localStorage && localStorage.getItem("tasks")) {
       var tasks = JSON.parse(localStorage.getItem("tasks"));
       this.setState({
-        tasks: tasks,
+        tasks: [],
       });
     }
   }
