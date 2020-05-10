@@ -4,12 +4,12 @@ import TaskForm from "./component/TaskForm";
 import Control from "./component/Control";
 import TaskList from "./component/TaskList";
 import { findIndex, filter } from "lodash";
+// import demo from './trainning/demo'
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      task: [], //id: unique, name,status
+    this.state = { 
       isDisplayForm: false,
       taksEditing: null,
       filterStatus: {
@@ -20,25 +20,6 @@ class App extends Component {
       sortBy: "name",
       sortValue: 1,
     };
-  }
-
-  componentWillMount() {
-    if (localStorage && localStorage.getItem("tasks")) {
-      var tasks = JSON.parse(localStorage.getItem("tasks"));
-      this.setState({
-        tasks: [],
-      });
-    }
-  }
-
-  s4() {
-    return Math.floor((1 + Math.random()) * 0x100000)
-      .toString(16)
-      .substring(1);
-  }
-
-  generateID() {
-    return this.s4() + this.s4() + "-" + this.s4();
   }
 
   onToggleForm = () => {
@@ -67,22 +48,6 @@ class App extends Component {
     });
   };
 
-  onSubmit = (data) => {
-    var { tasks } = this.state;
-    if (data.id === "") {
-      data.id = this.generateID();
-      console.log(tasks);
-      tasks.push(data);
-    } else {
-      var index = this.findIndex(data.id);
-      tasks[index] = data;
-    }
-    this.setState({
-      tasks: tasks,
-      taksEditing: "",
-    });
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  };
 
   onUpdateStatus = (id) => {
     var { tasks } = this.state;
@@ -164,50 +129,50 @@ class App extends Component {
       tasks,
       isDisplayForm,
       taksEditing,
-      filterStatus,
-      keyword,
+      // filterStatus,
+      // keyword,
       sortBy,
       sortValue,
     } = this.state;
 
-    if (filterStatus) {
-      if (filterStatus.name) {
-        tasks = filter(tasks, (task) => {
-          return task.name.toLowerCase().indexOf(filterStatus.name) !== -1;
-        });
-      }
+    // if (filterStatus) {
+    //   if (filterStatus.name) {
+    //     tasks = filter(tasks, (task) => {
+    //       return task.name.toLowerCase().indexOf(filterStatus.name) !== -1;
+    //     });
+    //   }
 
-      tasks = filter(tasks, (task) => {
-        if (filterStatus.status === -1) {
-          return task;
-        } else {
-          return task.status === (filterStatus.status === 1 ? true : false);
-        }
-      });
-    }
+    //   tasks = filter(tasks, (task) => {
+    //     if (filterStatus.status === -1) {
+    //       return task;
+    //     } else {
+    //       return task.status === (filterStatus.status === 1 ? true : false);
+    //     }
+    //   });
+    // }
 
-    tasks = filter(tasks, (task) => {
-      return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
-    });
+    // tasks = filter(tasks, (task) => {
+    //   return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+    // });
 
-    if (sortBy === "name") {
-      tasks.sort((a, b) => {
-        if (a.name > b.name) return sortValue;
-        else if (a.name < b.name) return -sortValue;
-        else return 0;
-      });
-    } else {
-      tasks.sort((a, b) => {
-        if (a.status > b.status) return -sortValue;
-        else if (a.status < b.status) return sortValue;
-        else return 0;
-      });
-    }
+    // if (sortBy === "name") {
+    //   tasks.sort((a, b) => {
+    //     if (a.name > b.name) return sortValue;
+    //     else if (a.name < b.name) return -sortValue;
+    //     else return 0;
+    //   });
+    // } else {
+    //   tasks.sort((a, b) => {
+    //     if (a.status > b.status) return -sortValue;
+    //     else if (a.status < b.status) return sortValue;
+    //     else return 0;
+    //   });
+    // }
 
     var elmTaskForm = isDisplayForm ? (
       <TaskForm
         onCloseForm={this.onCloseForm}
-        onSubmit={this.onSubmit}
+        // onSubmit={this.onSubmit}
         taksEditing={taksEditing}
       />
     ) : null;
