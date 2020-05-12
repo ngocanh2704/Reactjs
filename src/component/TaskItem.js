@@ -1,17 +1,19 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { toggleForm, updateStatus } from "../actions";
 
-export default class TaskItem extends Component {
+class TaskItem extends Component {
   onUpdateStatus = () => {
     this.props.onUpdateStatus(this.props.task.id);
   };
 
-  onDelete = () =>{
+  onDelete = () => {
     this.props.onDelete(this.props.task.id);
-  }
+  };
 
-  onUpdate = () =>{
+  onUpdate = () => {
     this.props.onUpdate(this.props.task.id);
-  }
+  };
 
   render() {
     var { task, index } = this.props;
@@ -32,11 +34,19 @@ export default class TaskItem extends Component {
           </span>
         </td>
         <td className="text-center">
-          <button type="button" className="btn btn-warning" onClick={this.onUpdate}>
+          <button
+            type="button"
+            className="btn btn-warning"
+            onClick={this.onUpdate}
+          >
             <span className="fa fa-pencil mr-5"></span> Sửa
           </button>
           &nbsp;
-          <button type="button" className="btn btn-warning" onClick={this.onDelete}>
+          <button
+            type="button"
+            className="btn btn-warning"
+            onClick={this.onDelete}
+          >
             <span className="fa fa-trash mr-5"></span> Xóa
           </button>
         </td>
@@ -44,3 +54,19 @@ export default class TaskItem extends Component {
     );
   }
 }
+
+const mapStateToProp = (state) => {
+  return {
+    
+  };
+};
+
+const mapDispatchToProp = (dispatch, props) => {
+  return {
+    onUpdateStatus: (id) => {
+      dispatch(updateStatus(id))
+    },
+  };
+};
+
+export default connect(mapStateToProp, mapDispatchToProp)(TaskItem);

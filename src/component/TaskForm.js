@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addTask } from "../actions";
+import { addTask, closeForm } from "../actions";
 
 class TaskForm extends Component {
   constructor(props) {
@@ -39,10 +39,6 @@ class TaskForm extends Component {
     }
   }
 
-  onCloseForm = () => {
-    this.props.onCloseForm();
-  };
-
   onChange = (event) => {
     var target = event.target;
     var name = target.name;
@@ -58,9 +54,9 @@ class TaskForm extends Component {
   onSubmit = (event) => {
     event.preventDefault();
     // this.props.onSubmit(this.state);
-    this.props.onAddTask(this.state)
+    this.props.onAddTask(this.state);
     this.onClear();
-    this.onCloseForm();
+    this.props.onCloseForm();
   };
 
   onClear = () => {
@@ -79,7 +75,7 @@ class TaskForm extends Component {
             {id !== "" ? "Cập Nhật Công Việc" : "Thêm Công Việc"}
             <span
               className="fa fa-times-circle text-right"
-              onClick={this.onCloseForm}
+              onClick={this.props.onCloseForm}
             ></span>
           </h3>
         </div>
@@ -133,6 +129,9 @@ const mapDispatchToProp = (dispatch, props) => {
   return {
     onAddTask: (task) => {
       dispatch(addTask(task));
+    },
+    onCloseForm: () => {
+      dispatch(closeForm());
     },
   };
 };
