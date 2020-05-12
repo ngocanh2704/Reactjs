@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { toggleForm, updateStatus } from "../actions";
+import {
+  updateStatus,
+  deleteTask,
+  closeForm,
+  toggleForm,
+  openForm,
+  editTask,
+} from "../actions";
 
 class TaskItem extends Component {
   onUpdateStatus = () => {
@@ -8,11 +15,13 @@ class TaskItem extends Component {
   };
 
   onDelete = () => {
-    this.props.onDelete(this.props.task.id);
+    this.props.onDeleteTask(this.props.task.id);
+    this.props.onCloseForm();
   };
 
-  onUpdate = () => {
-    this.props.onUpdate(this.props.task.id);
+  onEditTask = () => {
+    this.props.onOpenForm();
+    this.props.onEditTask(this.props.task);
   };
 
   render() {
@@ -37,7 +46,7 @@ class TaskItem extends Component {
           <button
             type="button"
             className="btn btn-warning"
-            onClick={this.onUpdate}
+            onClick={this.onEditTask}
           >
             <span className="fa fa-pencil mr-5"></span> Sửa
           </button>
@@ -56,15 +65,25 @@ class TaskItem extends Component {
 }
 
 const mapStateToProp = (state) => {
-  return {
-    
-  };
+  return {};
 };
 
 const mapDispatchToProp = (dispatch, props) => {
   return {
     onUpdateStatus: (id) => {
-      dispatch(updateStatus(id))
+      dispatch(updateStatus(id));
+    },
+    onDeleteTask: (id) => {
+      dispatch(deleteTask(id));
+    },
+    onCloseForm: () => {
+      dispatch(closeForm());
+    },
+    onOpenForm: () => {
+      dispatch(openForm());
+    },
+    onEditTask: (task) => {
+      dispatch(editTask(task));
     },
   };
 };

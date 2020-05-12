@@ -1,7 +1,15 @@
-import { LIST_ALL, ADD_TASK, UPDATE_STATUS_TASK } from "../contants/actionType";
+import {
+  LIST_ALL,
+  ADD_TASK,
+  UPDATE_STATUS_TASK,
+  DElETE_TASK,
+} from "../contants/actionType";
 
 var data = JSON.parse(localStorage.getItem("tasks"));
 var initalState = data ? data : [];
+
+var id = "";
+var index = -1;
 // console.log(data)
 
 var s4 = () => {
@@ -32,19 +40,24 @@ var myReducer = (state = initalState, action) => {
       var newTask = {
         id: generateID(),
         name: action.task.name,
-        state: action.task.status === "true" ? true : false,
+        status: action.task.status,
       };
-
       state.push(newTask);
       localStorage.setItem("tasks", JSON.stringify(state));
       return [...state];
     case UPDATE_STATUS_TASK:
-      var id = action.id;
-      var index = findIndex(state, id);
+      id = action.id;
+      index = findIndex(state, id);
       state[index] = {
         ...state[index],
         status: !state[index].status,
       };
+      localStorage.setItem("tasks", JSON.stringify(state));
+      return [...state];
+    case DElETE_TASK:
+      id = action.id;
+      index = findIndex(state, id);
+      state.splice(index, 1);
       localStorage.setItem("tasks", JSON.stringify(state));
       return [...state];
     default:

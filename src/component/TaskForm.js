@@ -53,7 +53,6 @@ class TaskForm extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    // this.props.onSubmit(this.state);
     this.props.onAddTask(this.state);
     this.onClear();
     this.props.onCloseForm();
@@ -67,12 +66,13 @@ class TaskForm extends Component {
   };
 
   render() {
-    var { id } = this.state;
+    var { isDisplayForm } = this.props;
+    if (!isDisplayForm) return "";
     return (
       <div className="panel panel-warning">
         <div className="panel-heading">
           <h3 className="panel-title">
-            {id !== "" ? "Cập Nhật Công Việc" : "Thêm Công Việc"}
+            {this.state.id !== "" ? "Cập Nhật Công Việc" : "Thêm Công Việc"}
             <span
               className="fa fa-times-circle text-right"
               onClick={this.props.onCloseForm}
@@ -122,7 +122,9 @@ class TaskForm extends Component {
 }
 
 const mapStateToProp = (state) => {
-  return {};
+  return {
+    isDisplayForm: state.isDisplayForm,
+  };
 };
 
 const mapDispatchToProp = (dispatch, props) => {

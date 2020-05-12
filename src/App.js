@@ -37,23 +37,6 @@ class App extends Component {
     }
   };
 
-  
-
-  onDelete = (id) => {
-    var { tasks } = this.state;
-    var index = findIndex(tasks, (task) => {
-      return task.id === id;
-    });
-    if (index !== -1) {
-      tasks.splice(index, 1);
-      this.setState({
-        tasks: tasks,
-      });
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
-    this.onCloseForm();
-  };
-
   onUpdate = (id) => {
     var { tasks } = this.state;
     var index = findIndex(tasks, (task) => {
@@ -65,8 +48,6 @@ class App extends Component {
     });
     this.onShowForm();
   };
-
-  
 
   onFilter = (filterName, filterStatus) => {
     filterStatus = parseInt(filterStatus, 10);
@@ -135,14 +116,6 @@ class App extends Component {
     //     else return 0;
     //   });
     // }
-
-    var elmTaskForm = isDisplayForm ? (
-      <TaskForm
-        onCloseForm={this.onCloseForm}
-        // onSubmit={this.onSubmit}
-        taksEditing={taksEditing}
-      />
-    ) : null;
     return (
       <div className="container">
         <div className="text-center">
@@ -158,7 +131,7 @@ class App extends Component {
             }
           >
             {/* Form */}
-            {elmTaskForm}
+            <TaskForm taksEditing={taksEditing} />
           </div>
 
           <div
@@ -188,11 +161,7 @@ class App extends Component {
 
             <div className="row mt-15">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <TaskList
-                  onDelete={this.onDelete}
-                  onUpdate={this.onUpdate}
-                  onFilter={this.onFilter}
-                />
+                <TaskList onUpdate={this.onUpdate} onFilter={this.onFilter} />
               </div>
             </div>
           </div>
@@ -211,11 +180,11 @@ const mapStateToProp = (state) => {
 const mapDispatchToProp = (dispatch, props) => {
   return {
     onToggleForm: () => {
-     dispatch(toggleForm());
+      dispatch(toggleForm());
     },
     onCloseForm: () => {
-      dispatch(closeForm())
-    }
+      dispatch(closeForm());
+    },
   };
 };
 

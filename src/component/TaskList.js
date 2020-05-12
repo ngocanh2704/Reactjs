@@ -17,7 +17,7 @@ class TaskList extends Component {
     var value = target.value;
     this.props.onFilter(
       name === "filterName" ? value : this.state.filterName,
-      (name === "filterStatus" ? value : this.state.filterStatus)
+      name === "filterStatus" ? value : this.state.filterStatus
     );
     this.setState({
       [name]: value,
@@ -29,14 +29,7 @@ class TaskList extends Component {
     var { filterName, filterStatus } = this.state;
     var elmTask = tasks
       ? tasks.map((task, index) => {
-          return (
-            <TaskItem
-              key={task.id}
-              index={index}
-              task={task}
-              onDelete={this.props.onDelete}
-            />
-          );
+          return <TaskItem key={task.id} index={index} task={task} />;
         })
       : null;
     return (
@@ -82,10 +75,10 @@ class TaskList extends Component {
   }
 }
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
   return {
-    tasks: state.tasks
-  }
-}
+    tasks: state.tasks,
+  };
+};
 
-export default connect(mapStateToProps, null)(TaskList)
+export default connect(mapStateToProps, null)(TaskList);
