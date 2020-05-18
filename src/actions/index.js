@@ -8,6 +8,8 @@ import {
   DElETE_TASK,
   EDIT_TASK,
   FILTER_TABLE,
+  SEARCH,
+  SORT,
 } from "../contants/actionType";
 
 export const listAll = () => {
@@ -65,5 +67,19 @@ export const filterTask = (filter) => {
   return {
     type: FILTER_TABLE,
     filter,
+  };
+};
+
+export const searchTask = (keyword) => {
+  return {
+    type: SEARCH,
+    keyword,
+  };
+};
+
+export const sortTask = (sort) => {
+  return {
+    type: SORT,
+    sort,
   };
 };

@@ -58,7 +58,6 @@ class TaskForm extends Component {
 
   onClear = () => {
     this.setState({
-      
       name: "",
       status: false,
     });

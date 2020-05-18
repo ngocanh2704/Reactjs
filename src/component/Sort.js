@@ -1,11 +1,18 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { sortTask } from "../actions";
 
-export default class Sort extends Component {
+class Sort extends Component {
   onClick = (sortBy, sortValue) => {
-    this.props.onSort(sortBy, sortValue);
+    var sort = {
+      by: sortBy,
+      value: sortValue,
+    };
+    this.props.onSort(sort);
   };
 
   render() {
+    var { sort } = this.props;
     return (
       <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <div className="dropdown">
@@ -28,7 +35,7 @@ export default class Sort extends Component {
               <a
                 role="button"
                 className={
-                  (this.props.sortBy === "name" && this.props.sortValue) === 1
+                  (sort.by === "name" && sort.value) === 1
                     ? "sort_selected"
                     : null
                 }
@@ -44,7 +51,7 @@ export default class Sort extends Component {
               <a
                 role="button"
                 className={
-                  (this.props.sortBy === "name" && this.props.sortValue) === -1
+                  (sort.by === "name" && sort.value) === -1
                     ? "sort_selected"
                     : null
                 }
@@ -61,7 +68,7 @@ export default class Sort extends Component {
               <a
                 role="button"
                 className={
-                  (this.props.sortBy === "status" && this.props.sortValue) === 1
+                  (sort.by === "status" && sort.value) === 1
                     ? "sort_selected"
                     : null
                 }
@@ -77,8 +84,7 @@ export default class Sort extends Component {
               <a
                 role="button"
                 className={
-                  (this.props.sortBy === "status" && this.props.sortValue) ===
-                  -1
+                  (sort.by === "status" && sort.value) === -1
                     ? "sort_selected"
                     : null
                 }
@@ -92,3 +98,19 @@ export default class Sort extends Component {
     );
   }
 }
+
+const mapToStateProps = (state) => {
+  return {
+    sort: state.sort,
+  };
+};
+
+const mapToDispatchProps = (dispatch, action) => {
+  return {
+    onSort: (sort) => {
+      dispatch(sortTask(sort));
+    },
+  };
+};
+
+export default connect(mapToStateProps, mapToDispatchProps)(Sort);

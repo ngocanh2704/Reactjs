@@ -10,11 +10,7 @@ import { toggleForm, closeForm, editTask, openForm } from "./actions";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      keyword: "",
-      sortBy: "name",
-      sortValue: 1,
-    };
+    this.state = {};
   }
 
   onToggleForm = () => {
@@ -30,36 +26,9 @@ class App extends Component {
     });
   };
 
-  onSearch = (keyword) => {
-    this.setState({
-      keyword: keyword,
-    });
-  };
-
-  onSort = (sortBy, sortValue) => {
-    this.setState({
-      sortBy: sortBy,
-      sortValue: sortValue,
-    });
-  };
-
   render() {
-    var { sortBy, sortValue } = this.state;
-
     var { isDisplayForm } = this.props;
-    // if (sortBy === "name") {
-    //   tasks.sort((a, b) => {
-    //     if (a.name > b.name) return sortValue;
-    //     else if (a.name < b.name) return -sortValue;
-    //     else return 0;
-    //   });
-    // } else {
-    //   tasks.sort((a, b) => {
-    //     if (a.status > b.status) return -sortValue;
-    //     else if (a.status < b.status) return sortValue;
-    //     else return 0;
-    //   });
-    // }
+
     return (
       <div className="container">
         <div className="text-center">
@@ -95,12 +64,7 @@ class App extends Component {
             </button>
             {/* Search - Sort */}
 
-            <Control
-              onSearch={this.onSearch}
-              onSort={this.onSort}
-              sortBy={sortBy}
-              sortValue={sortValue}
-            />
+            <Control />
             {/* List */}
 
             <div className="row mt-15">
