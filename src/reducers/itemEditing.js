@@ -1,6 +1,6 @@
 import * as types from "../contants/actionType";
 
-var initialState = {}
+var initialState = { id: "", name: "", status: false };
 
 var myReducer = (state = initialState, action) => {
   switch (action.type) {

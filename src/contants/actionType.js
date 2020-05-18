@@ -7,3 +7,5 @@ export const ADD_TASK = 'ADD_TASK'
 export const UPDATE_STATUS_TASK = 'UPDATE_STATUS_TASK'
 export const DElETE_TASK = 'DElETE_TASK'
 export const EDIT_TASK = 'EDIT_TASK'
+
+export const FILTER_TABLE = 'FILTER_TABLE'

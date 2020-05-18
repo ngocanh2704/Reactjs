@@ -7,6 +7,7 @@ import {
   UPDATE_STATUS_TASK,
   DElETE_TASK,
   EDIT_TASK,
+  FILTER_TABLE,
 } from "../contants/actionType";
 
 export const listAll = () => {
@@ -56,6 +57,13 @@ export const deleteTask = (id) => {
 export const editTask = (task) => {
   return {
     type: EDIT_TASK,
-    task
-  }
-}
+    task,
+  };
+};
+
+export const filterTask = (filter) => {
+  return {
+    type: FILTER_TABLE,
+    filter,
+  };
+};

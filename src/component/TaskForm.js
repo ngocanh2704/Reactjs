@@ -13,29 +13,27 @@ class TaskForm extends Component {
   }
 
   componentWillMount() {
-    if (this.props.taksEditing) {
+    if (this.props.itemEditing && this.props.itemEditing.id !== null) {
       this.setState({
-        id: this.props.taksEditing.id,
-        name: this.props.taksEditing.name,
-        status: this.props.taksEditing.status,
+        id: this.props.itemEditing.id,
+        name: this.props.itemEditing.name,
+        status: this.props.itemEditing.status,
       });
+    } else {
+      this.onClear();
     }
   }
 
   //khi them cong viec Task Form render muon edit
   componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.taksEditing) {
+    if (nextProps && nextProps.itemEditing) {
       this.setState({
-        id: nextProps.taksEditing.id,
-        name: nextProps.taksEditing.name,
-        status: nextProps.taksEditing.status,
+        id: nextProps.itemEditing.id,
+        name: nextProps.itemEditing.name,
+        status: nextProps.itemEditing.status,
       });
-    } else if (!nextProps.taksEditing) {
-      this.setState({
-        id: "",
-        name: "",
-        status: false,
-      });
+    } else if (!nextProps.itemEditing) {
+      this.onClear();
     }
   }
 
@@ -60,6 +58,7 @@ class TaskForm extends Component {
 
   onClear = () => {
     this.setState({
+      
       name: "",
       status: false,
     });
@@ -67,12 +66,12 @@ class TaskForm extends Component {
 
   render() {
     var { isDisplayForm } = this.props;
-    if (!isDisplayForm) return "";
+    if (!isDisplayForm) return null;
     return (
       <div className="panel panel-warning">
         <div className="panel-heading">
           <h3 className="panel-title">
-            {this.state.id !== "" ? "Cập Nhật Công Việc" : "Thêm Công Việc"}
+            {this.state.id ? "Cập Nhật Công Việc" : "Thêm Công Việc"}
             <span
               className="fa fa-times-circle text-right"
               onClick={this.props.onCloseForm}
@@ -124,6 +123,7 @@ class TaskForm extends Component {
 const mapStateToProp = (state) => {
   return {
     isDisplayForm: state.isDisplayForm,
+    itemEditing: state.itemEditing,
   };
 };
 

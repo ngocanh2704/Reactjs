@@ -5,14 +5,13 @@ import Control from "./component/Control";
 import TaskList from "./component/TaskList";
 import { findIndex, filter } from "lodash";
 import { connect } from "react-redux";
-import { toggleForm, closeForm } from "./actions";
+import { toggleForm, closeForm, editTask, openForm } from "./actions";
 // import demo from './trainning/demo'
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      taksEditing: null,
       filterStatus: {
         name: "",
         status: -1,
@@ -24,29 +23,16 @@ class App extends Component {
   }
 
   onToggleForm = () => {
-    if (this.state.isDisplayForm && this.state.taksEditing !== null) {
-      this.setState({
-        isDisplayForm: true,
-        taksEditing: null,
-      });
+    if (this.props.itemEditing && this.props.itemEditing.id !== "") {
+      this.props.onOpenForm();
     } else {
-      this.setState({
-        isDisplayForm: !this.state.isDisplayForm,
-        taksEditing: null,
-      });
+      this.props.onToggleForm();
     }
-  };
-
-  onUpdate = (id) => {
-    var { tasks } = this.state;
-    var index = findIndex(tasks, (task) => {
-      return task.id === id;
+    this.props.onClearTask({
+      id: "",
+      name: "",
+      status: false,
     });
-    var taksEditing = tasks[index];
-    this.setState({
-      taksEditing: taksEditing,
-    });
-    this.onShowForm();
   };
 
   onFilter = (filterName, filterStatus) => {
@@ -74,7 +60,6 @@ class App extends Component {
 
   render() {
     var {
-      taksEditing,
       // filterStatus,
       // keyword,
       sortBy,
@@ -90,13 +75,7 @@ class App extends Component {
     //     });
     //   }
 
-    //   tasks = filter(tasks, (task) => {
-    //     if (filterStatus.status === -1) {
-    //       return task;
-    //     } else {
-    //       return task.status === (filterStatus.status === 1 ? true : false);
-    //     }
-    //   });
+    //   
     // }
 
     // tasks = filter(tasks, (task) => {
@@ -131,7 +110,7 @@ class App extends Component {
             }
           >
             {/* Form */}
-            <TaskForm taksEditing={taksEditing} />
+            <TaskForm />
           </div>
 
           <div
@@ -144,7 +123,7 @@ class App extends Component {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={this.props.onToggleForm}
+              onClick={this.onToggleForm}
             >
               <span className="fa fa-plus mr-5"></span>
               Thêm công việc
@@ -161,7 +140,7 @@ class App extends Component {
 
             <div className="row mt-15">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <TaskList onUpdate={this.onUpdate} onFilter={this.onFilter} />
+                <TaskList onFilter={this.onFilter} />
               </div>
             </div>
           </div>
@@ -174,6 +153,7 @@ class App extends Component {
 const mapStateToProp = (state) => {
   return {
     isDisplayForm: state.isDisplayForm,
+    itemEditing: state.itemEditing,
   };
 };
 
@@ -184,6 +164,12 @@ const mapDispatchToProp = (dispatch, props) => {
     },
     onCloseForm: () => {
       dispatch(closeForm());
+    },
+    onClearTask: (task) => {
+      dispatch(editTask(task));
+    },
+    onOpenForm: () => {
+      dispatch(openForm());
     },
   };
 };
