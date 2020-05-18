@@ -3,7 +3,6 @@ import "./App.css";
 import TaskForm from "./component/TaskForm";
 import Control from "./component/Control";
 import TaskList from "./component/TaskList";
-import { findIndex, filter } from "lodash";
 import { connect } from "react-redux";
 import { toggleForm, closeForm, editTask, openForm } from "./actions";
 // import demo from './trainning/demo'
@@ -12,10 +11,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterStatus: {
-        name: "",
-        status: -1,
-      },
       keyword: "",
       sortBy: "name",
       sortValue: 1,
@@ -35,16 +30,6 @@ class App extends Component {
     });
   };
 
-  onFilter = (filterName, filterStatus) => {
-    filterStatus = parseInt(filterStatus, 10);
-    this.setState({
-      filterStatus: {
-        name: filterName.toLowerCase(),
-        status: filterStatus,
-      },
-    });
-  };
-
   onSearch = (keyword) => {
     this.setState({
       keyword: keyword,
@@ -59,29 +44,9 @@ class App extends Component {
   };
 
   render() {
-    var {
-      // filterStatus,
-      // keyword,
-      sortBy,
-      sortValue,
-    } = this.state;
+    var { sortBy, sortValue } = this.state;
 
     var { isDisplayForm } = this.props;
-
-    // if (filterStatus) {
-    //   if (filterStatus.name) {
-    //     tasks = filter(tasks, (task) => {
-    //       return task.name.toLowerCase().indexOf(filterStatus.name) !== -1;
-    //     });
-    //   }
-
-    //   
-    // }
-
-    // tasks = filter(tasks, (task) => {
-    //   return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
-    // });
-
     // if (sortBy === "name") {
     //   tasks.sort((a, b) => {
     //     if (a.name > b.name) return sortValue;
@@ -140,7 +105,7 @@ class App extends Component {
 
             <div className="row mt-15">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <TaskList onFilter={this.onFilter} />
+                <TaskList />
               </div>
             </div>
           </div>

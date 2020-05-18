@@ -29,8 +29,8 @@ class TaskList extends Component {
 
   render() {
     var { tasks, filterTable } = this.props;
-    console.log(filterTable);
     var { filterName, filterStatus } = this.state;
+
     if (filterTable.name) {
       tasks = tasks.filter((task) => {
         return (
@@ -39,16 +39,14 @@ class TaskList extends Component {
       });
     }
 
-    if (filterTable.status) {
-      tasks = filter((task) => {
-        if (filterTable.status === -1) {
-          return task;
-        } else {
-          console.log(task.status)
-          return task.status === (filterTable.status === 1 ? true : false);
-        }
-      });
-    }
+    tasks = tasks.filter((task) => {
+      if (filterTable.status === -1) {
+        return task;
+      } else {
+        return task.status === (filterTable.status === 1 ? true : false);
+      }
+    });
+
     var elmTask = tasks
       ? tasks.map((task, index) => {
           return <TaskItem key={task.id} index={index} task={task} />;
